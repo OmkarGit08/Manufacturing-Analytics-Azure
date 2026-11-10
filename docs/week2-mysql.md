@@ -22,3 +22,38 @@ Load the same AI4I 2020 dataset into a real database and check that SQL gives th
 6. Re-ran the failure rate by product type with `GROUP BY`
 
 Full script: [`sql/01_setup_and_analysis.sql`](../sql/01_setup_and_analysis.sql)
+
+
+## Results: SQL vs Excel
+Every number was checked in both tools and matched:
+
+| Check | Excel | SQL |
+|---|---|---|
+| Total records | 10,000 | 10,000 |
+| Machine failures | 339 | 339 |
+| Failure rate | 3.39% | 3.39% |
+| Failures with no recorded failure mode | 9 | 9 |
+| Failure modes TWF / HDF / PWF / OSF / RNF | 46 / 115 / 95 / 98 / 19 | 46 / 115 / 95 / 98 / 19 |
+
+Failure rate by product type (SQL, `GROUP BY product_type`):
+
+| Type | Records | Failures | Failure rate |
+|---|---|---|---|
+| L | 6,000 | 235 | 3.92% |
+| M | 2,997 | 83 | 2.77% |
+| H | 1,003 | 21 | 2.09% |
+
+## Insights
+- L-type products fail most often (3.92%), almost twice the rate of H-type (2.09%)
+- Failures are rare (3.39%), so the data is strongly imbalanced
+- 9 failed machines have no failure mode recorded. They are kept in the data and treated as "unknown cause"
+- The five failure modes add up to 373 events, more than the 330 failed machines that have a recorded mode, so some machines failed in more than one way
+
+## What I learned
+- A database needs the right column type for each column (DECIMAL, TINYINT, VARCHAR)
+- `GROUP BY` in SQL does what a pivot table does in Excel
+- Checking the same result in two tools is a fast way to find mistakes
+- Import wizards can silently change column mappings: scroll with the scrollbar, not the mouse wheel
+
+## Next
+Week 3: Python (pandas) on the same data, plus a Python check of the same numbers.
