@@ -55,5 +55,18 @@ Failure rate by product type (SQL, `GROUP BY product_type`):
 - Checking the same result in two tools is a fast way to find mistakes
 - Import wizards can silently change column mappings: scroll with the scrollbar, not the mouse wheel
 
+## Extra analysis: tool wear
+| Group | Machines | Average tool wear |
+|---|---|---|
+| Healthy | 9,661 | 106.7 min |
+| Failed for another reason | 293 | 132.4 min |
+| Failed because of tool wear (TWF) | 46 | 216.4 min |
+
+- 45 of the 46 tool-wear failures happened at 200 minutes of wear or more
+- 801 machines have 200+ minutes of wear, and only 5.6% of them failed from tool wear
+- Risk above 200 minutes is about 12 times higher than average (5.6% vs 0.46%), so 200 minutes is a warning line, not a failure line
+- Replacing every tool at 200 minutes would prevent 45 of 46 tool-wear failures but replace 756 tools that would not have failed from wear. A better rule would combine wear with another signal such as torque
+- Caution: the 200-minute line was found in the same data it was tested on, so it would need testing on new data
+
 ## Next
 Week 3: Python (pandas) on the same data, plus a Python check of the same numbers.
